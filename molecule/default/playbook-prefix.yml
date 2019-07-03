@@ -11,7 +11,7 @@
 
   roles:
     - geerlingguy.java
-    - geerlingguy.jenkins
+    - it-praktyk.jenkins
 
   post_tasks:
     - name: Ensure Jenkins is running with the specified prefix.

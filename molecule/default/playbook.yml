@@ -8,7 +8,7 @@
 
   roles:
     - role: geerlingguy.java
-    - role: geerlingguy.jenkins
+    - role: it-praktyk.jenkins
 
   post_tasks:
     - name: Check if Jenkins is running.
