@@ -1,8 +1,16 @@
-# Ansible Role: Jenkins CI
+# Ansible Role: Jenkins
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-jenkins.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-jenkins)
+[![Build Status](https://travis-ci.org/it-praktyk/ansible-role-jenkins.svg?branch=master)](https://travis-ci.org/it-praktyk/ansible-role-jenkins)
 
-Installs Jenkins CI on RHEL/CentOS and Debian/Ubuntu servers.
+Installs Jenkins server (formarly the [Jenkins](https://jenkins.io/)) on RHEL/CentOS and Debian/Ubuntu servers.
+
+The role is forked from the role authored initially by [Jeff Geerling](https://github.com/geerlingguy). The intention for that fork is to create the role with strong community focus role to install/manage Jenkins.
+
+The fork base
+
+- date: 2019-07-03
+- the role version: 3.7.0
+- the commit SHA: 14f0e2155fdb0896878fcfd6b269d6dbc4406fed
 
 ## Requirements
 
