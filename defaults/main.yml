@@ -4,6 +4,9 @@
 # jenkins_version: "1.644"
 # jenkins_pkg_url: "https://www.example.com"
 
+# Jenkins release line. Available options: lts / weekly.
+jenkins_release_line: lts
+
 # Change this to `latest` to update Jenkins if a newer version is available.
 jenkins_package_state: present
 
