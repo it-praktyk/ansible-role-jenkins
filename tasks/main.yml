@@ -1,21 +1,21 @@
 ---
 # Variable setup.
-- name: Include OS-Specific variables
+- name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Define jenkins_repo_url
   set_fact:
-    jenkins_repo_url: "{{ __jenkins_repo_url }}"
+    jenkins_repo_url: "{{ vars['__jenkins_repo_url_' + jenkins_release_line] }}"
   when: jenkins_repo_url is not defined
 
 - name: Define jenkins_repo_key_url
   set_fact:
-    jenkins_repo_key_url: "{{ __jenkins_repo_key_url }}"
+    jenkins_repo_key_url: "{{ vars['__jenkins_repo_key_url_' + jenkins_release_line] }}"
   when: jenkins_repo_key_url is not defined
 
 - name: Define jenkins_pkg_url
   set_fact:
-    jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
+    jenkins_pkg_url: "{{ vars['__jenkins_pkg_url_' + jenkins_release_line] }}"
   when: jenkins_pkg_url is not defined
 
 # Setup/install tasks.

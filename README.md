@@ -20,6 +20,11 @@ Requires `curl` to be installed on the server. Also, newer versions of Jenkins r
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+    jenkins_release_line: lts
+
+The channel used to gather `jenkins` package. Available options: `lts` and `weekly`.
+Detailed explanation of LTS release line you can read [at the Jenkins webpage](https://jenkins.io/download/lts/).
+
     jenkins_package_state: present
 
 The state of the `jenkins` package install. By default this role installs Jenkins but will not upgrade Jenkins (when using package-based installs). If you want to always update to the latest version, change this to `latest`.
@@ -119,7 +124,7 @@ Changes made to the Jenkins init script; the default set of changes set the conf
 
 ## Dependencies
 
-  - geerlingguy.java
+- geerlingguy.java
 
 ## Example Playbook
 
