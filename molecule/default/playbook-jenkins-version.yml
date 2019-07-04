@@ -5,6 +5,7 @@
 
   vars:
     jenkins_version: "1.644"
+    jenkins_release_line: "weekly"
 
   roles:
     - geerlingguy.java
