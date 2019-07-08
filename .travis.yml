@@ -6,25 +6,21 @@ env:
   global:
     - ROLE_OWNER: it-praktyk
     - ROLE_NAME: jenkins
+
   matrix:
-    # Test defaults.
-    - MOLECULE_DISTRO: centos7
-    - MOLECULE_DISTRO: ubuntu1804
-    - MOLECULE_DISTRO: ubuntu1604
-    - MOLECULE_DISTRO: debian9
+    - scenario: default
+      playbook: playbook.yml
+    - scenario: centos-latest
+      playbook: playbook-http-port.yml
+    - scenario: centos-latest
+      playbook: playbook-prefix.yml
+    - scenario: centos-latest
+      playbook: playbook-jenkins-version.yml
+    - scenario: ubuntu-latest
+      playbook: playbook-plugins-with-home.yml
 
-    # Test other role features.
-    - MOLECULE_DISTRO: ubuntu1804
-      MOLECULE_PLAYBOOK: playbook-http-port.yml
-
-    - MOLECULE_DISTRO: ubuntu1804
-      MOLECULE_PLAYBOOK: playbook-prefix.yml
-
-    - MOLECULE_DISTRO: centos7
-      MOLECULE_PLAYBOOK: playbook-jenkins-version.yml
-
-    - MOLECULE_DISTRO: ubuntu1804
-      MOLECULE_PLAYBOOK: playbook-plugins-with-home.yml
+cache:
+  - pip
 
 install:
   # Install test dependencies.
@@ -33,12 +29,12 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-$ROLE_NAME $ROLE_OWNER.$ROLE_NAME
+  - ln -s ansible-role-$ROLE_NAME $ROLE_OWNER.$ROLE_NAME
   - cd $ROLE_OWNER.$ROLE_NAME
 
 script:
   # Run tests.
-  - molecule test
+  - molecule test --scenario-name ${scenario:-default}
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -1,6 +1,6 @@
 ---
 - name: Ensure dependencies are installed.
-  package:
+  yum:
     name:
       - curl
       - libselinux-python
@@ -32,14 +32,14 @@
   when: jenkins_version is defined
 
 - name: Install our specific version of Jenkins.
-  package:
+  yum:
     name: "/tmp/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
     state: present
   when: jenkins_version is defined and specific_version.stat.exists
   notify: configure default users
 
 - name: Ensure Jenkins is installed.
-  package:
+  yum:
     name: jenkins
     state: "{{ jenkins_package_state }}"
   notify: configure default users

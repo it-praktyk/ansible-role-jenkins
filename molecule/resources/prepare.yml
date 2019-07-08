@@ -1,0 +1,12 @@
+---
+- name: Default
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  vars:
+    jenkins_version: ${jenkins_version:-8}
+
+  roles:
+    - robertdebock.bootstrap
+    - robertdebock.java
