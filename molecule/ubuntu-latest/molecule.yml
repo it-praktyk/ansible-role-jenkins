@@ -5,17 +5,9 @@ dependency:
     role-file: molecule/resources/requirements.yml
 lint:
   name: yamllint
-  # options:
-  #   config-file: molecule/default/yaml-lint.yml
 driver:
   name: docker
 platforms:
-  - name: centos-latest
-    image: centos:latest
-    pre_build_image: yes
-  - name: debian-stable
-    image: debian:stable
-    pre_build_image: yes
   - name: ubuntu-latest
     image: ubuntu:latest
     pre_build_image: yes
@@ -24,7 +16,8 @@ provisioner:
   playbooks:
     prepare: ../resources/prepare.yml
     converge: ../resources/${playbook:-playbook.yml}
+    idempotence: ../resources/${playbook:-playbook.yml}
   lint:
     name: ansible-lint
 scenario:
-  name: default
+  name: ubuntu-latest

@@ -11,10 +11,14 @@
     jenkins_plugin_timeout: 120
 
   pre_tasks:
-    - include_tasks: java-8.yml
+    - include_role:
+        name: robertdebock.bootstrap
+    - include_role:
+        name: robertdebock.java
+      vars:
+        java_version: 8
 
   roles:
-    - geerlingguy.java
     - it-praktyk.jenkins
 
   post_tasks:

@@ -14,7 +14,8 @@ The fork base
 
 ## Requirements
 
-Requires `curl` to be installed on the server. Also, newer versions of Jenkins require Java 8+ (see the test playbooks inside the `molecule/default` directory for an example of how to use newer versions of Java for your OS).
+- Installed version of Java 8 or Java 11 [(except very old version of Jenkins that works with Java 7)](https://jenkins.io/doc/administration/requirements/java/). In oposite to the [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java) role that role doesn't install Java. For Molecule-based tests the role [robertdebock.java](https://galaxy.ansible.com/robertdebock/java) is used.
+- [`curl`](https://curl.haxx.se/) installed on the server
 
 ## Role Variables
 
@@ -124,7 +125,7 @@ Changes made to the Jenkins init script; the default set of changes set the conf
 
 ## Dependencies
 
-- geerlingguy.java
+- none
 
 ## Example Playbook
 
@@ -133,8 +134,6 @@ Changes made to the Jenkins init script; the default set of changes set the conf
   vars:
     jenkins_hostname: jenkins.example.com
   roles:
-    - role: geerlingguy.java
-      become: yes
     - role: geerlingguy.jenkins
       become: yes
 ```
