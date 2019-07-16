@@ -6,14 +6,6 @@
   vars:
     jenkins_url_prefix: /jenkins
 
-  pre_tasks:
-    - include_role:
-        name: robertdebock.bootstrap
-    - include_role:
-        name: robertdebock.java
-      vars:
-        java_version: 8
-
   roles:
     - it-praktyk.jenkins
 

@@ -7,14 +7,6 @@
     jenkins_version: "1.644"
     jenkins_release_line: "weekly"
 
-  pre_tasks:
-    - include_role:
-        name: robertdebock.bootstrap
-    - include_role:
-        name: robertdebock.java
-      vars:
-        java_version: 8
-
   roles:
     - it-praktyk.jenkins
 
