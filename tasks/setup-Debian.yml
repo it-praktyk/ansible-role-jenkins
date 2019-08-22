@@ -1,4 +1,10 @@
 ---
+- debug:
+    var: jenkins_repo
+
+- debug:
+    var: jenkins_package_name_effective
+
 - name: Ensure dependencies are installed.
   apt:
     name:
@@ -8,38 +14,33 @@
 
 - name: Add Jenkins apt repository key.
   apt_key:
-    url: "{{ jenkins_repo_key_url }}"
+    url: "{{ jenkins_repo_key_url_effective }}"
     state: present
 
 - name: Add Jenkins apt repository.
   apt_repository:
-    repo: "{{ jenkins_repo_url }}"
+    repo: "{{ jenkins_repo_def_effective }}"
     state: present
-    update_cache: true
-  when: jenkins_repo_url != ""
+  when: register_repository | bool
   tags: ['skip_ansible_lint']
 
-- name: Download specific Jenkins version.
+- name: Download specific version of Jenkins.
   get_url:
-    url: "{{ jenkins_pkg_url }}/jenkins_{{ jenkins_version }}_all.deb"
-    dest: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+    url: "{{ jenkins_pkg_uri_effective }}/{{ jenkins_package_name_effective }}"
+    dest: "/tmp/{{ jenkins_package_name_effective }}"
   when: jenkins_version is defined
 
-- name: Check if we downloaded a specific version of Jenkins.
-  stat:
-    path: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
-  register: specific_version
-  when: jenkins_version is defined
-
-- name: Install our specific version of Jenkins.
+- name: Install specific version of Jenkins.
   apt:
-    deb: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+    deb: "/tmp/{{ jenkins_package_name_effective }}"
     state: present
-  when: jenkins_version is defined and specific_version.stat.exists
+  when: jenkins_version is defined
   notify: configure default users
 
 - name: Ensure Jenkins is installed.
   apt:
     name: jenkins
     state: "{{ jenkins_package_state }}"
+    update_cache: yes
+  when: jenkins_version is not defined
   notify: configure default users

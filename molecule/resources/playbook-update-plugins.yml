@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  vars:
+    jenkins_plugin_update: true
+
+  roles:
+    - it-praktyk.jenkins

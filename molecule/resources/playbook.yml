@@ -1,8 +1,21 @@
 ---
-- name: Converge
+- name: Default
   hosts: all
   become: yes
   gather_facts: yes
 
-  roles:
-    - role: ansible-role-jenkins
+  tasks:
+  - name: Get java exucutable from the PATH
+    shell: command -v java | wc -l
+    changed_when: false
+    register: java_count
+    tags: ['skip_ansible_lint']
+
+  - name: Ensure that java is available
+    assert:
+      that:
+        - java_count.stdout | int == 1
+
+  - name: test the role
+    include_role:
+      name: ansible-role-jenkins
