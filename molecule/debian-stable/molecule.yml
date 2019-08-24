@@ -6,7 +6,7 @@ dependency:
 lint:
   name: yamllint
 driver:
-  name: docker
+  name: ${driver:-docker}
 platforms:
   - name: debian-stable
     image: debian:stable
@@ -21,3 +21,6 @@ provisioner:
     name: ansible-lint
 scenario:
   name: debian-stable
+  destroy_sequence:
+    - cleanup
+    - destroy

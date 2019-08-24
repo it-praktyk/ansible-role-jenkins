@@ -6,7 +6,7 @@ dependency:
 lint:
   name: yamllint
 driver:
-  name: docker
+  name: ${driver:-docker}
 platforms:
   - name: ubuntu-latest
     image: ubuntu:latest
@@ -21,3 +21,6 @@ provisioner:
     name: ansible-lint
 scenario:
   name: ubuntu-latest
+  destroy_sequence:
+    - cleanup
+    - destroy

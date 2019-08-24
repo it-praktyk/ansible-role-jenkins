@@ -26,6 +26,10 @@ Available variables are listed below, along with default values (see `defaults/m
 The channel used to gather `jenkins` package. Available options: `lts` and `weekly`.
 Detailed explanation of LTS release line you can read [at the Jenkins webpage](https://jenkins.io/download/lts/).
 
+    register_repository: yes
+
+When set to `yes` a repository of distribution specific packages (deb/rpm) will be registered at the system.
+
     jenkins_package_state: present
 
 The state of the `jenkins` package install. By default this role installs Jenkins but will not upgrade Jenkins (when using package-based installs). If you want to always update to the latest version, change this to `latest`.
@@ -82,7 +86,17 @@ The server connection timeout, in seconds, when installing Jenkins plugins.
     jenkins_version: "1.644"
     jenkins_pkg_url: "http://www.example.com"
 
-(Optional) Then Jenkins version can be pinned to any version available on `http://pkg.jenkins-ci.org/debian/` (Debian/Ubuntu) or `http://pkg.jenkins-ci.org/redhat/` (RHEL/CentOS). If the Jenkins version you need is not available in the default package URLs, you can override the URL with your own; set `jenkins_pkg_url` (_Note_: the role depends on the same naming convention that `http://pkg.jenkins-ci.org/` uses).
+Then Jenkins version can be pinned to any version available for Jenkins release lines
+    - `https://pkg.jenkins-ci.org/debian-stable/` (Debian/Ubuntu - lts)
+    - `https://pkg.jenkins-ci.org/redhat-stable/` (RHEL/CentOS - lts)
+    - `https://pkg.jenkins-ci.org/debian/` (Debian/Ubuntu - weekly)
+    - `https://pkg.jenkins-ci.org/redhat/` (RHEL/CentOS - weekly)
+If the Jenkins version you need is not available in the default package URLs, you can override the URL with your own; set `jenkins_pkg_url` (_Note_: the role depends on the same naming convention that `https://pkg.jenkins-ci.org/` uses).
+
+    jenkins_predownloaded_package_path: ""
+
+The path to the Jenkins package rpm/deb. If the path is defined version  Use the predownloaded package 
+
 
     jenkins_url_prefix: ""
 

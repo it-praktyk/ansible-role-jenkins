@@ -8,7 +8,7 @@ lint:
   # options:
   #   config-file: molecule/default/yaml-lint.yml
 driver:
-  name: docker
+  name: ${driver:-docker}
 platforms:
   - name: centos-latest
     image: centos:latest
@@ -28,3 +28,6 @@ provisioner:
     name: ansible-lint
 scenario:
   name: default
+  destroy_sequence:
+    - cleanup
+    - destroy
