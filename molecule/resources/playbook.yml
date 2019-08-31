@@ -9,7 +9,6 @@
     shell: command -v java | wc -l
     changed_when: false
     register: java_count
-    tags: ['skip_ansible_lint']
 
   - name: Ensure that java is available
     assert:

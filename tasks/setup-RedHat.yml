@@ -12,7 +12,6 @@
     url: "{{ jenkins_repo_def_effective }}"
     dest: /etc/yum.repos.d/jenkins.repo
   when: register_repository | bool
-  tags: ['skip_ansible_lint']
 
 - name: Add Jenkins repo GPG key.
   rpm_key:

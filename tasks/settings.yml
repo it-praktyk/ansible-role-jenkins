@@ -41,6 +41,7 @@
     name: jenkins
     state: restarted
   when: jenkins_init_prefix.changed
+  # [503] Tasks that run when changed should likely be handlers
   tags: ['skip_ansible_lint']
 
 - name: Set HTTP port in Jenkins config.
@@ -70,4 +71,5 @@
     (jenkins_users_config is defined and jenkins_users_config.changed)
     or (jenkins_http_config is defined and jenkins_http_config.changed)
     or (jenkins_home_config is defined and jenkins_home_config.changed)
+  # [503] Tasks that run when changed should likely be handlers
   tags: ['skip_ansible_lint']

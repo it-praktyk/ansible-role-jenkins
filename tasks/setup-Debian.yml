@@ -16,7 +16,6 @@
     repo: "{{ jenkins_repo_def_effective }}"
     state: present
   when: register_repository | bool
-  # tags: ['skip_ansible_lint']
 
 - name: Ensure Jenkins is installed.
   apt:
