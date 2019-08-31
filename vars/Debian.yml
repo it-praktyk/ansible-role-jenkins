@@ -3,11 +3,11 @@ jenkins_repo:
   weekly:
     repo_def: deb https://pkg.jenkins.io/debian binary/
     repo_key: https://pkg.jenkins.io/debian/jenkins.io.key
-    repo_pkg_url: https://pkg.jenkins.io/debian
+    repo_pkg_url: https://pkg.jenkins.io/debian/binary
   lts:
     repo_def: deb https://pkg.jenkins.io/debian-stable binary/
     repo_key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
-    repo_pkg_url: https://pkg.jenkins.io/debian-stable
+    repo_pkg_url: https://pkg.jenkins.io/debian-stable/binary
 
 jenkins_init_file: /etc/default/jenkins
 jenkins_http_port_param: HTTP_PORT
