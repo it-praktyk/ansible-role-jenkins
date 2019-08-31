@@ -1,10 +1,4 @@
 ---
-- debug:
-    var: jenkins_repo
-
-- debug:
-    var: jenkins_package_name_effective
-
 - name: Ensure dependencies are installed.
   apt:
     name:
@@ -22,20 +16,7 @@
     repo: "{{ jenkins_repo_def_effective }}"
     state: present
   when: register_repository | bool
-  tags: ['skip_ansible_lint']
-
-- name: Download specific version of Jenkins.
-  get_url:
-    url: "{{ jenkins_pkg_uri_effective }}/{{ jenkins_package_name_effective }}"
-    dest: "/tmp/{{ jenkins_package_name_effective }}"
-  when: jenkins_version is defined
-
-- name: Install specific version of Jenkins.
-  apt:
-    deb: "/tmp/{{ jenkins_package_name_effective }}"
-    state: present
-  when: jenkins_version is defined
-  notify: configure default users
+  # tags: ['skip_ansible_lint']
 
 - name: Ensure Jenkins is installed.
   apt:
@@ -44,3 +25,27 @@
     update_cache: yes
   when: jenkins_version is not defined
   notify: configure default users
+
+- name: Get existing Jenkins version
+  shell: "dpkg --list | grep jenkins | grep {{ jenkins_version }} | wc -l"
+  args:
+    warn: false
+  register: jenkins_exists
+  when: jenkins_version is defined
+  changed_when: false
+
+- name: Install specific version of Jenkins.
+  block:
+    - name: Install specific version of Jenkins - download a package.
+      get_url:
+        url: "{{ jenkins_pkg_uri_effective }}/{{ jenkins_package_name_effective }}"
+        dest: "/tmp/{{ jenkins_package_name_effective }}"
+      when: jenkins_version is defined
+
+    - name: Install specific version of Jenkins - install a package.
+      apt:
+        deb: "/tmp/{{ jenkins_package_name_effective }}"
+        state: present
+      when: jenkins_version is defined
+      notify: configure default users
+  when: jenkins_version is defined and jenkins_exists.stdout | int == 0
