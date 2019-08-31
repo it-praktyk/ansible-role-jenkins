@@ -11,17 +11,38 @@
     - it-praktyk.jenkins
 
   post_tasks:
-    - name: Check installed version of Jenkins.
-      command: rpm -q jenkins
-      args:
-        warn: false
-      changed_when: false
-      register: jenkins_rpm_version
-      tags: ['skip_ansible_lint']
+    - name: Verify installation of specific version of Jenkins - Red Hat
+      block:
+        - name: Check installed version of Jenkins
+          command: rpm -q jenkins
+          args:
+            warn: false
+          changed_when: false
+          register: installed_jenkins_version
 
-    - name: Print installed Jenkins package information.
-      debug: var=jenkins_rpm_version
+        - name: Print installed Jenkins package information.
+          debug:
+            var: installed_jenkins_version
 
-    - name: Fail if version doesn't match what we wanted.
-      fail:
-      when: "jenkins_version not in jenkins_rpm_version.stdout"
+        - name: Fail if version doesn't match what we wanted.
+          fail:
+          when: jenkins_version not in installed_jenkins_version.stdout
+      when: ansible_os_family == 'RedHat'
+
+    - name: Verify installation of specific version of Jenkins - Debian
+      block:
+        - name: Check installed version of Jenkins
+          command: dpkg-query --list jenkins
+          args:
+            warn: false
+          changed_when: false
+          register: installed_jenkins_version
+
+        - name: Print installed Jenkins package information.
+          debug:
+            var: installed_jenkins_version
+
+        - name: Fail if version doesn't match what we wanted.
+          fail:
+          when: jenkins_version not in installed_jenkins_version.stdout
+      when: ansible_os_family == 'Debian'

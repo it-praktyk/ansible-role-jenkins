@@ -17,6 +17,8 @@ env:
     - scenario: centos-latest
       playbook: playbook-jenkins-version.yml
     - scenario: ubuntu-latest
+      playbook: playbook-jenkins-version.yml
+    - scenario: debian-stable
       playbook: playbook-plugins-with-home.yml
 
 cache:
@@ -34,7 +36,7 @@ before_script:
 
 script:
   # Run tests.
-  - molecule test --scenario-name ${scenario:-default}
+  - playbook=${playbook} molecule test --scenario-name ${scenario:-default}
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
