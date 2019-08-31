@@ -10,9 +10,9 @@ env:
   matrix:
     - scenario: default
       playbook: playbook.yml
-    - scenario: centos-latest
+    - scenario: debian-stable
       playbook: playbook-http-port.yml
-    - scenario: centos-latest
+    - scenario: debian-stable
       playbook: playbook-prefix.yml
     - scenario: centos-latest
       playbook: playbook-jenkins-version.yml

@@ -13,9 +13,6 @@ platforms:
   - name: centos-latest
     image: centos:latest
     pre_build_image: yes
-  - name: debian-stable
-    image: debian:stable
-    pre_build_image: yes
   - name: ubuntu-latest
     image: ubuntu:latest
     pre_build_image: yes
@@ -24,6 +21,7 @@ provisioner:
   playbooks:
     prepare: ../resources/prepare.yml
     converge: ../resources/${playbook:-playbook.yml}
+    idempotence: ../resources/${playbook:-playbook.yml}
   lint:
     name: ansible-lint
 scenario:
