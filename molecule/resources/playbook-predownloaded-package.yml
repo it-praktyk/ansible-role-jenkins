@@ -1,0 +1,93 @@
+---
+- name: Default
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    package_to_download:
+      RedHat:
+        version: 2.164.3
+        uri: https://pkg.jenkins.io/redhat-stable
+        filename: jenkins-2.164.3-1.1.noarch.rpm
+        md5sum: d932c994583848c1c04a309211793b02
+      Debian:
+        version: 2.176.1
+        uri: https://pkg.jenkins.io/debian-stable/binary
+        filename: jenkins_2.176.1_all.deb
+        md5sum: 43359ab560d415361ea24e07f27cdbf1
+
+    jenkins_predownloaded_package_path: "/tmp/packages/{{ package_to_download[ansible_os_family]['filename'] }}"
+    jenkins_version: "{{ package_to_download[ansible_os_family]['version'] }}"
+
+  tasks:
+    - name: Get java exucutable from the PATH
+      shell: command -v java | wc -l
+      changed_when: false
+      register: java_count
+
+    - name: Ensure that java is available
+      assert:
+        that:
+          - java_count.stdout | int == 1
+
+    - name: Check if Pre-downloaded jenkins package exists
+      stat:
+        path: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/{{ package_to_download[ansible_os_family]['filename'] }}"
+        get_checksum: yes
+        checksum_algorithm: md5
+      delegate_to: localhost
+      become: no
+      register: existing_predownloaded_jenkins_package
+
+    - name: Pre-download jenkins package
+      get_url:
+        url: "{{ package_to_download[ansible_os_family]['uri'] }}/{{ package_to_download[ansible_os_family]['filename'] }}"
+        dest: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}"
+      delegate_to: localhost
+      register: predownloaded_jenkins_package
+      become: no
+      when: >
+        not existing_predownloaded_jenkins_package.stat.exists or
+        existing_predownloaded_jenkins_package.stat.checksum != package_to_download[ansible_os_family]['md5sum']
+
+    - name: test the role
+      include_role:
+        name: ansible-role-jenkins
+
+  post_tasks:
+    - name: Verify installation of specific version of Jenkins - Red Hat
+      block:
+        - name: Check installed version of Jenkins
+          command: rpm -q jenkins
+          args:
+            warn: false
+          changed_when: false
+          register: installed_jenkins_version
+
+        - name: Print installed Jenkins package information.
+          debug:
+            var: installed_jenkins_version
+
+        - name: Fail if version doesn't match what we wanted.
+          fail:
+          when: jenkins_version not in installed_jenkins_version.stdout
+      when: ansible_os_family == 'RedHat'
+
+    - name: Verify installation of specific version of Jenkins - Debian
+      block:
+        - name: Check installed version of Jenkins
+          command: dpkg-query --list jenkins
+          args:
+            warn: false
+          changed_when: false
+          register: installed_jenkins_version
+
+        - name: Print installed Jenkins package information.
+          debug:
+            var: installed_jenkins_version
+
+        - name: Fail if version doesn't match what we wanted.
+          fail:
+          when: jenkins_version not in installed_jenkins_version.stdout
+      when: ansible_os_family == 'Debian'

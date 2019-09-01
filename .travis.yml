@@ -14,12 +14,16 @@ env:
       playbook: playbook-http-port.yml
     - scenario: debian-stable
       playbook: playbook-prefix.yml
+    - scenario: ubuntu-latest
+      playbook: playbook-plugins-with-home.yml
     - scenario: centos-latest
       playbook: playbook-jenkins-version.yml
     - scenario: ubuntu-latest
       playbook: playbook-jenkins-version.yml
-    - scenario: debian-stable
-      playbook: playbook-plugins-with-home.yml
+    - scenario: centos-latest-volumes
+      playbook: playbook-predownloaded-package.yml
+    - scenario: debian-stable-volumes
+      playbook: playbook-predownloaded-package.yml
 
 cache:
   - pip

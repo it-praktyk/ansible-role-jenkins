@@ -23,7 +23,9 @@
     name: jenkins
     state: "{{ jenkins_package_state }}"
     update_cache: yes
-  when: jenkins_version is not defined
+  when:
+    - jenkins_version is not defined
+    - jenkins_predownloaded_package_path is not defined
   notify:
     - configure default users
     - restart jenkins
@@ -36,20 +38,30 @@
   when: jenkins_version is defined
   changed_when: false
 
+- name: Install pre-downloaded version of Jenkins.
+  yum:
+    name: "{{ jenkins_predownloaded_package_path }}"
+    state: present
+  notify:
+    - configure default users
+    - restart jenkins
+  when: jenkins_predownloaded_package_path is defined
+
 - name: Install specific version of Jenkins.
   block:
     - name: Install specific version of Jenkins - download a package.
       get_url:
         url: "{{ jenkins_pkg_uri_effective }}/{{ jenkins_package_name_effective }}"
-        dest: "/tmp/{{ jenkins_package_name_effective }}"
-      when: jenkins_version is defined
+        dest: "{{ '/tmp/' ~ jenkins_package_name_effective }}"
 
     - name: Install specific version of Jenkins - install a package.
       yum:
-        name: "/tmp/{{ jenkins_package_name_effective }}"
+        name: "{{ '/tmp/' ~ jenkins_package_name_effective }}"
         state: present
-      when: jenkins_version is defined
       notify:
         - configure default users
         - restart jenkins
-  when: jenkins_version is defined and jenkins_exists.stdout | int == 0
+  when:
+    - jenkins_version is defined
+    - jenkins_exists.stdout | int == 0
+    - jenkins_predownloaded_package_path is not defined
