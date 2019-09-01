@@ -1,5 +1,4 @@
 ---
-# Update Jenkins so that plugin updates don't fail.
 - name: Create Jenkins updates directory.
   file:
     path: "{{ jenkins_home }}/updates"

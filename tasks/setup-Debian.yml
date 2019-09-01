@@ -23,7 +23,9 @@
     state: "{{ jenkins_package_state }}"
     update_cache: yes
   when: jenkins_version is not defined
-  notify: configure default users
+  notify:
+    - configure default users
+    - restart jenkins
 
 - name: Get existing Jenkins version
   shell: "dpkg --list | grep jenkins | grep {{ jenkins_version }} | wc -l"
@@ -46,5 +48,7 @@
         deb: "/tmp/{{ jenkins_package_name_effective }}"
         state: present
       when: jenkins_version is defined
-      notify: configure default users
+      notify:
+        - configure default users
+        - restart jenkins
   when: jenkins_version is defined and jenkins_exists.stdout | int == 0

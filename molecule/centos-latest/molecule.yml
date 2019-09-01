@@ -25,6 +25,12 @@ provisioner:
     name: ansible-lint
 scenario:
   name: centos-latest
+  converge_sequence:
+    - dependency
+    - lint
+    - create
+    - prepare
+    - converge
   destroy_sequence:
     - cleanup
     - destroy

@@ -1,9 +1,4 @@
 ---
-- name: restart jenkins
-  service:
-    name: jenkins
-    state: restarted
-
 - name: configure default users
   template:
     src: basic-security.groovy.j2
@@ -12,3 +7,8 @@
     group: "{{ jenkins_process_group }}"
     mode: 0775
   register: jenkins_users_config
+
+- name: restart jenkins
+  service:
+    name: jenkins
+    state: restarted
