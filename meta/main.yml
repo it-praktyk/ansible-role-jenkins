@@ -2,25 +2,21 @@
 dependencies: []
 
 galaxy_info:
-  author: geerlingguy
-  description: Jenkins CI
-  company: "Midwestern Mac, LLC"
+  author: it-praktyk
+  role_name: jenkins
+  description: Installs Jenkins server (formerly the [Jenkins](https://jenkins.io/)) on RHEL/CentOS and Debian/Ubuntu servers.
   license: "license (BSD, MIT)"
-  min_ansible_version: 2.4
+  min_ansible_version: 2.7
   platforms:
     - name: EL
       versions:
-        - 6
         - 7
-    - name: Fedora
-      versions:
-        - all
     - name: Debian
       versions:
-        - all
+        - buster
     - name: Ubuntu
       versions:
-        - all
+        - bionic
   galaxy_tags:
     - development
     - packaging
