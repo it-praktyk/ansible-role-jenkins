@@ -8,13 +8,15 @@ lint:
 driver:
   name: ${driver:-docker}
 platforms:
-  - name: centos-latest
-    image: centos:latest
+  - name: debian-stable
+    image: debian:stable
     pre_build_image: yes
     exposed_ports:
       - 8080/tcp
     published_ports:
       - 0.0.0.0:8980:8080/tcp
+    volumes:
+      - ${MOLECULE_SCENARIO_DIRECTORY:-.}:/tmp/packages:ro
 provisioner:
   name: ansible
   playbooks:
@@ -24,7 +26,7 @@ provisioner:
   lint:
     name: ansible-lint
 scenario:
-  name: centos-latest
+  name: debian-stable-volumes
   converge_sequence:
     - dependency
     - lint

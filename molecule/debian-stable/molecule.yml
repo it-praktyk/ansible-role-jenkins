@@ -21,6 +21,12 @@ provisioner:
     name: ansible-lint
 scenario:
   name: debian-stable
+  converge_sequence:
+    - dependency
+    - lint
+    - create
+    - prepare
+    - converge
   destroy_sequence:
     - cleanup
     - destroy

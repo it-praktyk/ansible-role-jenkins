@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/it-praktyk/ansible-role-jenkins.svg?branch=master)](https://travis-ci.org/it-praktyk/ansible-role-jenkins)
 
-Installs Jenkins server (formarly the [Jenkins](https://jenkins.io/)) on RHEL/CentOS and Debian/Ubuntu servers.
+Installs Jenkins server (formerly the [Jenkins](https://jenkins.io/)) on RHEL/CentOS and Debian/Ubuntu servers.
 
-The role is forked from the role authored initially by [Jeff Geerling](https://github.com/geerlingguy). The intention for that fork is to create the role with strong community focus role to install/manage Jenkins.
+The role is forked from the role authored initially by [Jeff Geerling](https://github.com/geerlingguy). The intention for that fork is to create the role with a strong community focus role to install/manage Jenkins.
 
 The fork base
 
@@ -14,7 +14,7 @@ The fork base
 
 ## Requirements
 
-- Installed version of Java 8 or Java 11 [(except very old version of Jenkins that works with Java 7)](https://jenkins.io/doc/administration/requirements/java/). In oposite to the [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java) role that role doesn't install Java. For Molecule-based tests the role [robertdebock.java](https://galaxy.ansible.com/robertdebock/java) is used.
+- An installed version of Java 8 or Java 11 [(except very old versions of Jenkins those work with Java 7)](https://jenkins.io/doc/administration/requirements/java/). In opposite to the [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java) role, that role doesn't install Java. For Molecule-based tests, the role [robertdebock.java](https://galaxy.ansible.com/robertdebock/java) is used.
 - [`curl`](https://curl.haxx.se/) installed on the server
 
 ## Role Variables
@@ -24,15 +24,15 @@ Available variables are listed below, along with default values (see `defaults/m
     jenkins_release_line: lts
 
 The channel used to gather `jenkins` package. Available options: `lts` and `weekly`.
-Detailed explanation of LTS release line you can read [at the Jenkins webpage](https://jenkins.io/download/lts/).
+A detailed explanation of LTS release line you can read [at the Jenkins webpage](https://jenkins.io/download/lts/).
 
     register_repository: yes
 
-When set to `yes` a repository of distribution specific packages (deb/rpm) will be registered at the system.
+When set to `yes` the official Jenkins repository of distribution-specific packages (deb/rpm) will be registered at the system.
 
     jenkins_package_state: present
 
-The state of the `jenkins` package install. By default this role installs Jenkins but will not upgrade Jenkins (when using package-based installs). If you want to always update to the latest version, change this to `latest`.
+The state of the `jenkins` package install. By default, this role installs Jenkins but will not upgrade Jenkins (when using package-based installs). If you want to always update to the latest version, change this to `latest`.
 
     jenkins_hostname: localhost
 
@@ -40,7 +40,7 @@ The system hostname; usually `localhost` works fine. This will be used during se
 
     jenkins_home: /var/lib/jenkins
 
-The Jenkins home directory which, amongst others, is being used for storing artifacts, workspaces and plugins. This variable allows you to override the default `/var/lib/jenkins` location.
+The Jenkins home directory which, amongst others, is being used for storing artifacts, workspaces, and plugins. This variable allows you to override the default `/var/lib/jenkins` location.
 
     jenkins_http_port: 8080
 
@@ -51,13 +51,9 @@ The HTTP port for Jenkins' web interface.
 
 Default admin account credentials which will be created the first time Jenkins is installed.
 
-    jenkins_admin_password_file: ""
-
-Default admin password file which will be created the first time Jenkins is installed as /var/lib/jenkins/secrets/initialAdminPassword
-
     jenkins_jar_location: /opt/jenkins-cli.jar
 
-The location at which the `jenkins-cli.jar` jarfile will be kept. This is used for communicating with Jenkins via the CLI.
+The location at which the `jenkins-cli.jar` jar file will be kept. This is used for communicating with Jenkins via the CLI.
 
     jenkins_plugins: []
 
@@ -84,19 +80,20 @@ The URL to use for Jenkins plugin updates and update-center information.
 The server connection timeout, in seconds, when installing Jenkins plugins.
 
     jenkins_version: "1.644"
-    jenkins_pkg_url: "http://www.example.com"
 
 Then Jenkins version can be pinned to any version available for Jenkins release lines
-    - `https://pkg.jenkins-ci.org/debian-stable/` (Debian/Ubuntu - lts)
-    - `https://pkg.jenkins-ci.org/redhat-stable/` (RHEL/CentOS - lts)
-    - `https://pkg.jenkins-ci.org/debian/` (Debian/Ubuntu - weekly)
-    - `https://pkg.jenkins-ci.org/redhat/` (RHEL/CentOS - weekly)
-If the Jenkins version you need is not available in the default package URLs, you can override the URL with your own; set `jenkins_pkg_url` (_Note_: the role depends on the same naming convention that `https://pkg.jenkins-ci.org/` uses).
+    - `https://pkg.jenkins.io/debian-stable/` (Debian/Ubuntu - lts)
+    - `https://pkg.jenkins.io/redhat-stable/` (RHEL/CentOS - lts)
+    - `https://pkg.jenkins.io/debian/` (Debian/Ubuntu - weekly)
+    - `https://pkg.jenkins.io/redhat/` (RHEL/CentOS - weekly)
+
+    jenkins_pkg_url: "http://www.example.com"
+
+If the Jenkins version you need is not available in the default package URLs, you can override the URL with your own; set `jenkins_pkg_url` (_Note_: the role depends on the same folder structure and packages naming convention that `https://pkg.jenkins.io/` uses).
 
     jenkins_predownloaded_package_path: ""
 
-The path to the Jenkins package rpm/deb. If the path is defined version  Use the predownloaded package 
-
+The path to the Jenkins package rpm/deb. If the variable is set the file has to be delivered to a managed node before running the role and a Jenkins version is not verified.
 
     jenkins_url_prefix: ""
 
@@ -105,14 +102,14 @@ Used for setting a URL prefix for your Jenkins installation. The option is added
     jenkins_connection_delay: 5
     jenkins_connection_retries: 60
 
-Amount of time and number of times to wait when connecting to Jenkins after initial startup, to verify that Jenkins is running. Total time to wait = `delay` * `retries`, so by default this role will wait up to 300 seconds before timing out.
+Amount of time and number of times to wait when connecting to Jenkins after initial startup, to verify that Jenkins is running. Total time to wait = `delay` * `retries`, so by default, this role will wait up to 300 seconds before timing out.
 
     # For RedHat/CentOS (role default):
-    jenkins_repo_url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
-    jenkins_repo_key_url: http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+    jenkins_repo_url: http://pkg.jenkins.io/redhat/jenkins.repo
+    jenkins_repo_key_url: http://pkg.jenkins.io/redhat/jenkins.io.key
     # For Debian (role default):
-    jenkins_repo_url: deb http://pkg.jenkins-ci.org/debian binary/
-    jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key
+    jenkins_repo_url: deb http://pkg.jenkins.io/debian binary/
+    jenkins_repo_key_url: http://pkg.jenkins.io/debian/jenkins.io.key
 
 This role will install the latest version of Jenkins by default (using the official repositories as listed above). You can override these variables (use the correct set for your platform) to install the current LTS version instead:
 
@@ -123,7 +120,7 @@ This role will install the latest version of Jenkins by default (using the offic
     jenkins_repo_url: deb http://pkg.jenkins-ci.org/debian-stable binary/
     jenkins_repo_key_url: http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key
 
-It is also possible stop the repo file being added by setting  `jenkins_repo_url = ''`. This is useful if, for example, you sign your own packages or run internal package management (e.g. Spacewalk).
+It is also possible stop registering the repository (the file is added always) by using setting the variable `register_repository`.
 
     jenkins_java_options: "-Djenkins.install.runSetupWizard=false"
 
@@ -148,7 +145,7 @@ Changes made to the Jenkins init script; the default set of changes set the conf
   vars:
     jenkins_hostname: jenkins.example.com
   roles:
-    - role: geerlingguy.jenkins
+    - role: it-praktyk.jenkins
       become: yes
 ```
 
@@ -158,4 +155,6 @@ MIT (Expat) / BSD
 
 ## Author Information
 
-This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+The current maintainer/author: Wojciech Sciesinski wojciech[at]sciesinski[dot]net.
+
+This role was initially created in 2014 by [Jeff Geerling](https://github.com/geerlingguy).
