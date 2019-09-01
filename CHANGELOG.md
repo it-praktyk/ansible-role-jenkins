@@ -10,6 +10,17 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
+## 4.0.1 - 2019-09-01
+
+BREAKING CHANGES:
+
+- Switched compatibility to Ansible >= 2.7
+- Corrected list of compatible OS'es
+
+BUG FIXES:
+
+- Correction of Ansible Galaxy metadata
+
 ## 4.0.0 - 2019-09-01
 
 BREAKING CHANGES:
